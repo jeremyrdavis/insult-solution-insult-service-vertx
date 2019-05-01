@@ -58,37 +58,19 @@ public class HttpApplication extends AbstractVerticle {
                 .get(80, NOUN_HOST,"/api/noun")
                 .rxSend()
                 .doOnSuccess(r -> System.out.println((r.bodyAsString())))
-                .map(HttpResponse::bodyAsJsonObject)
-                .doOnError(e -> {
-                    rc.response()
-                            .setStatusCode(500)
-                            .putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
-                            .end(new JsonObject().put("error", e.getMessage()).encodePrettily());
-                });
+                .map(HttpResponse::bodyAsJsonObject);
 
         Single<JsonObject> adj1 = webClient
                 .get(80, ADJECTIVE_HOST, "/api/adjective")
                 .rxSend()
                 .doOnSuccess(r -> System.out.println(r.bodyAsString()))
-                .map(HttpResponse::bodyAsJsonObject)
-                .doOnError(e -> {
-                    rc.response()
-                            .setStatusCode(500)
-                            .putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
-                            .end(new JsonObject().put("error", e.getMessage()).encodePrettily());
-                });
+                .map(HttpResponse::bodyAsJsonObject);
 
         Single<JsonObject> adj2 = webClient
                 .get(80, ADJECTIVE_HOST, "/api/adjective")
                 .rxSend()
                 .doOnSuccess(r -> System.out.println(r.bodyAsString()))
-                .map(HttpResponse::bodyAsJsonObject)
-                .doOnError(e -> {
-                    rc.response()
-                            .setStatusCode(500)
-                            .putHeader(CONTENT_TYPE, "application/json; charset=utf-8")
-                            .end(new JsonObject().put("error", e.getMessage()).encodePrettily());
-                });
+                .map(HttpResponse::bodyAsJsonObject);
 
         Single.zip(
                 adj1.doOnError(error -> error(rc, error)),
